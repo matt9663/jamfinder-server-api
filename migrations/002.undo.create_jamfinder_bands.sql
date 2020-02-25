@@ -1,0 +1,1 @@
+DROP IF TABLE EXISTS jamfinder_bands; 
