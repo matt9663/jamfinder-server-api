@@ -38,12 +38,26 @@ const UsersService = {
       user_name: xss(user.user_name),
       genres: xss(user.genres),
       instrument: xss(user.instrument),
-      influences: xss(user.influences)
+      influences: xss(user.influences),
+      bands: user.bands
     }
   },
   hashPassword(password) {
     return bcrypt.hash(password, 12)
-  }
+  },
+  updateUser(db, id, updatedUser) {
+    return db('jamfinder_users')
+      .where('id', id)
+      .update(updatedUser)
+      .returning('*')
+      .then(([user]) => user)
+  },
+  getUser(db, id) {
+    return db('jamfinder_users')
+      .select('id', 'user_name', 'genres', 'instrument', 'influences', 'bands')
+      .where('id', id)
+      .first()
+  },
 }
 
 module.exports = UsersService

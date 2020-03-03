@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS jamfinder_band_messages;

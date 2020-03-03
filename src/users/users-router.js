@@ -6,9 +6,33 @@ const usersRouter = express.Router()
 const jsonBodyParser = express.json()
 
 usersRouter
+  .route('/:user_id')
+  .all(checkUserExists)
+  .get((req, res) => {
+    res.json(UsersService.serializeUser(res.user))
+  })
+
+  async function checkUserExists(req, res, next) {
+    try {
+      const user = await UsersService.getUser(
+        req.app.get('db'),
+        req.params.user_id
+      )
+      if (!user)
+        return res.status(404).json({
+          error: 'User does not exist'
+        })
+      res.user = user
+      next()
+    } catch (error) {
+      nexts(error)
+    }
+  }
+
+usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {
     const { user_name, password, genres, instrument, influences } = req.body
-    for (const field of ['user_name', 'password']) 
+    for (const field of ['user_name', 'password', 'instrument']) 
       if (!req.body[field])
         return res.status(400).json({
           error: `Missing ${field} in request body`
@@ -46,6 +70,20 @@ usersRouter
                   .json(UsersService.serializeUser(user))
               })
           })
+      })
+      .catch(next)
+  })
+usersRouter
+  .route('/:user_id')
+  .patch(jsonBodyParser, (req, res, next) => {
+    id = req.params.user_id
+    UsersService.updateUser(
+      req.app.get('db'),
+      id,
+      req.body
+    )
+      .then(user => {
+        res.json(UsersService.serializeUser(user))
       })
       .catch(next)
   })

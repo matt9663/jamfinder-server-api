@@ -1,10 +1,13 @@
-require('dotenv').config()
+if (process.env.NODE_ENV !== 'production') { require('dotenv').config() }
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const usersRouter = require('./users/users-router')
+const bandsRouter = require('./bands/bands-router')
+const authRouter = require('./auth/auth-router')
+const messagesRouter = require('./band_messages/band_messages-router')
 
 const app = express()
 
@@ -17,6 +20,9 @@ app.use(helmet())
 app.use(cors())
 
 app.use('/api/users', usersRouter)
+app.use('/api/bands', bandsRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/messages', messagesRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
