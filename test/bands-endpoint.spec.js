@@ -94,6 +94,7 @@ describe('Bands endpoint', function() {
         .set('Authorization', helpers.makeAuthHeader(testUser))
         .send(newBand)
         .expect(201)
+        .expect(res)
     })
   })
   describe('GET /api/bands/user/:user_id', () => {
