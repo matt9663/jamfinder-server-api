@@ -58,6 +58,11 @@ const UsersService = {
       .where('id', id)
       .first()
   },
+  getUsersInBand(db, band_id) {
+    return db('jamfinder_users')
+    .select('id', 'user_name', 'genres', 'instrument', 'influences', 'bands')
+    .whereRaw('? = ANY (bands)', band_id)
+  }
 }
 
 module.exports = UsersService

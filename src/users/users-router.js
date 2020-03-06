@@ -1,12 +1,13 @@
 const express = require('express')
 const path = require('path')
 const UsersService = require('./users-service')
-
+const { requireAuth } = require('../middleware/jwt-auth')
 const usersRouter = express.Router()
 const jsonBodyParser = express.json()
 
 usersRouter
   .route('/:user_id')
+  .all(requireAuth)
   .all(checkUserExists)
   .get((req, res) => {
     res.json(UsersService.serializeUser(res.user))
@@ -25,9 +26,23 @@ usersRouter
       res.user = user
       next()
     } catch (error) {
-      nexts(error)
+      next(error)
     }
   }
+
+usersRouter
+  .route('/band/:band_id')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    UsersService.getUsersInBand(
+      req.app.get('db'),
+      req.params.band_id
+    )
+    .then(users => {
+      res.json(users.map(UsersService.serializeUser))
+    })
+    .catch(next)
+  })
 
 usersRouter
   .post('/', jsonBodyParser, (req, res, next) => {

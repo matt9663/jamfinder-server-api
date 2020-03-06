@@ -11,6 +11,10 @@ const BandsService = {
       .where('id', id)
       .first()
   },
+  getByUser(db, user_id) {
+    return BandsService.getAllBands(db)
+      .whereRaw('? = ANY (members)', user_id)
+  },
   insertBand(db, newBand) {
     return db
       .insert(newBand)

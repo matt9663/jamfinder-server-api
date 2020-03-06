@@ -17,6 +17,19 @@ bandsRouter
       })
       .catch(next)
   })
+bandsRouter
+  .route('/user/:user_id')
+  .all(requireAuth)
+  .get((req, res, next) => {
+    BandsService.getByUser(
+    req.app.get('db'),
+    req.params.user_id
+  )
+    .then(bands => {
+      res.json(bands.map(BandsService.serializeBand))
+    })
+    .catch(next)
+  })
 
 bandsRouter
   .route('/:band_id')

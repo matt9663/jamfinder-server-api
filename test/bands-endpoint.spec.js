@@ -73,7 +73,7 @@ describe('Bands endpoint', function() {
       })
     })
   })
-  describe('POST /api/bands', () => {
+  describe.only('POST /api/bands', () => {
     beforeEach('seed users' , () => {
       helpers.seedUsers(
         db,
@@ -93,6 +93,24 @@ describe('Bands endpoint', function() {
         .post('/api/bands')
         .set('Authorization', helpers.makeAuthHeader(testUser))
         .send(newBand)
+        .expect(201)
+    })
+  })
+  describe('GET /api/bands/user/:user_id', () => {
+    beforeEach('insert bands', () => 
+        helpers.seedBandsTable(
+          db,
+          testUsers,
+          testBands
+        )
+      )
+    it('returns only the bands that the user is a member of', () => {
+      const testUser = testUsers[0]
+      const expectedBands = testBands.filter(band => band.members.includes(testUser.id))
+      return supertest(app)
+        .get(`/api/bands/user/${testUser.id}`)
+        .set('Authorization', helpers.makeAuthHeader(testUser))
+        .expect(200, expectedBands)
     })
   })
 })

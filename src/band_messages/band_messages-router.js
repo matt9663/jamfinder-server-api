@@ -26,16 +26,14 @@ messagesRouter
   .all(requireAuth)
   .post(jsonBodyParser, (req, res, next) => {
     const { message } = req.body
-    if (!message) {
+    let newMessage = { message }
+    if (!newMessage) {
       return res.status(400).json({ error: 'Message body cannot be blank'})
     }
-    const newMessage = {
-      band: req.params.band_id,
-      author: req.user.id,
-      author_user_name: req.user.user_name,
-      date_published: new Date(),
-      message
-    }
+    newMessage.band = req.params.band_id
+    newMessage.author = req.user.id
+    newMessage.author_user_name = req.user.user_name
+    newMessage.date_published = new Date()
     MessagesService.insertMessage(
       req.app.get('db'),
       newMessage
