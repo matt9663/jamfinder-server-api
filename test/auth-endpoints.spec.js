@@ -81,7 +81,7 @@ describe('auth endpoints', () => {
       return supertest(app)
         .post('/api/auth/login')
         .send(happyCase)
-        .expect(200, { authToken: expectedToken })
+        .expect(200, { authToken: expectedToken, user: { bands: testUser.bands, id: testUser.id, user_name: testUser.user_name } })
     })
   })
 })

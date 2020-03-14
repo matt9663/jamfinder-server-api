@@ -1,4 +1,4 @@
-const xss = require('xss')
+const xss = require('xss');
 
 const MessagesService = {
   getBandMessages(db, band_id) {
@@ -6,7 +6,7 @@ const MessagesService = {
       .from('jamfinder_band_messages')
       .select('*')
       .where('band', band_id)
-      .orderBy('date_published', 'desc')
+      .orderBy('date_published', 'desc');
   },
   serializeMessage(message) {
     return ({
@@ -15,16 +15,16 @@ const MessagesService = {
       author: message.author,
       author_user_name: xss(message.author_user_name),
       date_published: message.date_published.toLocaleString(),
-      message: xss(message.message)
-    })
+      message: xss(message.message),
+    });
   },
   insertMessage(db, newMessage) {
     return db
       .insert(newMessage)
       .into('jamfinder_band_messages')
       .returning('*')
-      .then(([message]) => message)
-  }
+      .then(([message]) => message);
+  },
 }
 
-module.exports = MessagesService
+module.exports = MessagesService;

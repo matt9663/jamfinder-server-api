@@ -47,6 +47,12 @@ describe('Bands endpoint', function() {
   })
   describe('GET /api/bands/:band_id', () => {
     context('when there are no bands', () => {
+      beforeEach('insert users', () =>
+        helpers.seedUsers(
+          db,
+          testUsers
+        )
+      )
       it('responds with 404 not found', () => {
         const id = testBand.id
         return supertest(app)
@@ -73,7 +79,7 @@ describe('Bands endpoint', function() {
       })
     })
   })
-  describe.only('POST /api/bands', () => {
+  describe('POST /api/bands', () => {
     beforeEach('seed users' , () => {
       helpers.seedUsers(
         db,
@@ -94,7 +100,6 @@ describe('Bands endpoint', function() {
         .set('Authorization', helpers.makeAuthHeader(testUser))
         .send(newBand)
         .expect(201)
-        .expect(res)
     })
   })
   describe('GET /api/bands/user/:user_id', () => {

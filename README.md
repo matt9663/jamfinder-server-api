@@ -2,7 +2,13 @@
 
 ## [Live Link](https://jamfinder-app.now.sh/)
 
-This repo houses all the files for the server of my JamFinder app. JamFinder is designed to provide a platform for musicians to find/create bands and network with other musicans to start jam groups or more fully fledged projects in their area. This Node/Express server connects to the PostgreSQL database, where user data, band details, and message board messages are stored. The client side was constructed using React. [Client Repo](https://github.com/matt9663/jamfinder-client-app)
+This repo houses all the files for the server of my JamFinder app. This Node/Express server connects to the PostgreSQL database, where user data, band details, and message board messages are stored. The client side was constructed using React. [Client Repo](https://github.com/matt9663/jamfinder-client-app)
+
+## Summary
+
+Jamfinder is intended to be a social network for musicans to help them start bands and find people to play music with. Users can create bands or search for bands that already existed based on name, genre, or geographic location. They can join bands that are open to new members and then send messages to other members via a shared message board. The hope is that they'll be able to use the message board to plan rehearsals, share song ideas, or discuss anything else band-related.
+
+The current version supports several features, such as creating a band, joining existing bands that are open to new members, and posting to the band message board when the user is a member of the group. 
 
 ## API
 
@@ -13,7 +19,7 @@ The base URL for the API is `https://enigmatic-river-05952.herokuapp.com/`
 * ### **Login**:
 `POST /api/auth/login`
 
-  Example request:
+  Example request: 
   ```json
     {
       "user_name": [valid-user-name],

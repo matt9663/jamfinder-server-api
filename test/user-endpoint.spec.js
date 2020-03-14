@@ -30,13 +30,6 @@ describe('Users endpoint', function() {
   afterEach('cleanup', () => helpers.cleanTables(db))
 
   describe('GET /api/users/:user_id', () => {
-    context('given no users', () => {
-      it('responds with 404 and an error', () => {
-        return supertest(app)
-          .get(`/api/users/${testUser.id}`)
-          .expect(404, { error: 'User does not exist'})
-      })
-    })
     context('given users', () => {
       beforeEach('insert users', () => 
         helpers.seedUsers(
@@ -49,6 +42,7 @@ describe('Users endpoint', function() {
         const expectedUser = testUser
         return supertest(app)
           .get(`/api/users/${id}`)
+          .set('Authorization', helpers.makeAuthHeader(testUser))
           .expect(200, expectedUser)
       })
     })
@@ -194,6 +188,7 @@ describe('Users endpoint', function() {
       }
       return supertest(app)
         .patch(`/api/users/${user.id}`)
+        .set('Authorization', helpers.makeAuthHeader(testUser))
         .send(updatedFields)
         .expect(200)
         .expect(res => {

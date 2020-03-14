@@ -1,19 +1,19 @@
-const xss = require('xss')
+const xss = require('xss');
 
 const BandsService = {
   getAllBands(db) {
     return db
       .from('jamfinder_bands')
-      .select('*')
+      .select('*');
   },
   getById(db, id) {
     return BandsService.getAllBands(db)
       .where('id', id)
-      .first()
+      .first();
   },
   getByUser(db, user_id) {
     return BandsService.getAllBands(db)
-      .whereRaw('? = ANY (members)', user_id)
+      .whereRaw('? = ANY (members)', user_id);
   },
   insertBand(db, newBand) {
     return db
@@ -23,7 +23,7 @@ const BandsService = {
       .then(([band]) => band)
       .then(band =>
         BandsService.getById(db, band.id)
-      )
+      );
   },
   serializeBand(band) {
     return ({
@@ -34,16 +34,16 @@ const BandsService = {
       description: xss(band.description),
       members: band.members,
       new_members: band.new_members,
-      bandleader: band.bandleader
-    })
+      bandleader: band.bandleader,
+    });
   },
   updateBand(db, id, updatedBand) {
     return db('jamfinder_bands')
       .where('id', id)
       .update(updatedBand)
       .returning('*')
-      .then(([band]) => band)
-  }
+      .then(([band]) => band);
+  },
 }
 
-module.exports = BandsService
+module.exports = BandsService;
